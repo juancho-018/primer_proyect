@@ -564,18 +564,43 @@ img, video, iframe, embed, object {
   }
 }
 
-/* Pantallas Extra Pequeñas (Phones < 480px) */
-@media (max-width: 479px) {
-  body {
-    font-size: 0.9rem;
+/* Pantallas Extra Pequeñas y Celulares (Phones < 576px) */
+@media (max-width: 575px) {
+  html, body {
+    overflow-x: hidden;
+    width: 100%;
+  }
+  .app-container {
+    width: 96% !important;
+    margin: 0.8rem auto !important;
+    padding: 0 0.2rem !important;
   }
   .card-pastel {
-    padding: 1rem;
+    padding: 1.1rem !important;
+    border-radius: var(--radius-md) !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    width: 100% !important;
+    max-width: 100% !important;
   }
   h1 {
-    font-size: 1.35rem;
+    font-size: 1.3rem !important;
+  }
+  h2 {
+    font-size: 1.15rem !important;
   }
   .btn-pastel {
-    font-size: 0.85rem;
+    font-size: 0.85rem !important;
+    padding: 0.6rem 0.8rem !important;
+    width: 100% !important;
+  }
+  .form-control-pastel {
+    font-size: 0.88rem !important;
+    padding: 0.65rem 0.85rem !important;
+  }
+  .table-responsive {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    width: 100% !important;
   }
 }

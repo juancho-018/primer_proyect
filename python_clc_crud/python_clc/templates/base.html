@@ -36,7 +36,8 @@
     {% block extra_css %}{% endblock %}
   </head>
   <body>
-    <!-- Navbar Pastel con Logo Oficial y Carrito -->
+    <!-- Navbar Pastel con Logo Oficial y Carrito (Solo visible si ha iniciado sesión) -->
+    {% if current_user.is_authenticated %}
     <nav class="navbar-pastel">
       <div class="nav-container">
         <a href="{{ url_for('main.inicio') }}" class="nav-brand">
@@ -93,7 +94,6 @@
             </button>
           </li>
 
-          {% if current_user.is_authenticated %}
           <li>
             <a href="{{ url_for('main.inicioadmin') }}"
               ><i class="fa-solid fa-chart-line"></i> Dashboard</a
@@ -106,16 +106,10 @@
               ><i class="fa-solid fa-right-from-bracket"></i> Salir</a
             >
           </li>
-          {% else %}
-          <li>
-            <a href="{{ url_for('auth.login') }}" class="btn-pastel-primary"
-              ><i class="fa-solid fa-right-to-bracket"></i> Ingresar</a
-            >
-          </li>
-          {% endif %}
         </ul>
       </div>
     </nav>
+    {% endif %}
 
     <!-- Contenido Principal -->
     <main class="app-container">{% block content %}{% endblock %}</main>
