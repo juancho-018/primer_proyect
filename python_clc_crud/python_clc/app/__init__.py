@@ -83,10 +83,15 @@ def create_app():
     app.register_blueprint(api_bp)
     app.register_blueprint(compra_bp)
 
-    # Inicializar tablas de base de datos si no existen
+    # Inicializar tablas de base de datos y ajustar esquemas en MySQL
     with app.app_context():
         try:
             db.create_all()
+            try:
+                db.session.execute(db.text("ALTER TABLE usuario MODIFY COLUMN con_us VARCHAR(255)"))
+                db.session.commit()
+            except Exception:
+                db.session.rollback()
         except Exception as e:
             print(f"[Advertencia DB]: {e}")
 

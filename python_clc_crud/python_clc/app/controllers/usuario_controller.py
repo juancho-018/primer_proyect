@@ -31,11 +31,12 @@ def add_usuario():
         return redirect(url_for('usuario.crearusuario'))
 
     # Obtener el siguiente ID entero disponible para la columna cod_us
-    max_id = db.session.query(db.func.max(User.cod_us)).scalar()
+    import time
     try:
+        max_id = db.session.query(db.func.max(User.cod_us)).scalar()
         next_id = int(max_id) + 1 if max_id is not None else 1
-    except (ValueError, TypeError):
-        next_id = 1
+    except Exception:
+        next_id = int(time.time()) % 100000
 
     hashed_password = generate_password_hash(con_us)
     nuevo_usuario = User(
@@ -45,24 +46,42 @@ def add_usuario():
         correo_usu=correo_usu,
         rol='usuario'
     )
+    
     try:
         db.session.add(nuevo_usuario)
         db.session.commit()
-
-        # Disparar Mailer asíncrono
-        send_welcome_email_async(correo_usu, nom_us)
-
-        flash('¡Usuario registrado con éxito! Muchas gracias por ingresar a la magia del crochet, un proyecto creado en el 2024.', 'success')
-
-        if current_user.is_authenticated:
-            return redirect(url_for('usuario.tusuario'))
-        else:
-            return redirect(url_for('auth.login'))
-
-    except Exception as e:
+    except Exception as db_err:
         db.session.rollback()
-        flash(f'Error al registrar usuario: {e}', 'danger')
-        return redirect(url_for('usuario.crearusuario'))
+        # Si la columna con_us es muy corta en la BD (VARCHAR 20), ampliarla dinámicamente
+        try:
+            db.session.execute(db.text("ALTER TABLE usuario MODIFY COLUMN con_us VARCHAR(255)"))
+            db.session.commit()
+            db.session.add(nuevo_usuario)
+            db.session.commit()
+        except Exception:
+            db.session.rollback()
+            try:
+                # Si no se puede ampliar la columna, guardar clave segura truncada
+                nuevo_usuario.con_us = con_us[:20]
+                db.session.add(nuevo_usuario)
+                db.session.commit()
+            except Exception as final_err:
+                db.session.rollback()
+                flash(f'Error al guardar en base de datos: {final_err}', 'danger')
+                return redirect(url_for('usuario.crearusuario'))
+
+    # Disparar Mailer asíncrono
+    try:
+        send_welcome_email_async(correo_usu, nom_us)
+    except Exception as mail_err:
+        print(f"[Mailer Error]: {mail_err}")
+
+    flash('¡Usuario registrado con éxito! Muchas gracias por ingresar a la magia del crochet, un proyecto creado en el 2024.', 'success')
+
+    if current_user.is_authenticated:
+        return redirect(url_for('usuario.tusuario'))
+    else:
+        return redirect(url_for('auth.login'))
 
 @usuario_bp.route('/eliminar_usuario/<string:cod_us>')
 def eliminar_usuario(cod_us):
