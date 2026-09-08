@@ -30,9 +30,16 @@ def add_usuario():
         flash('El nombre de usuario ya existe. Por favor elige otro.', 'danger')
         return redirect(url_for('usuario.crearusuario'))
 
+    # Obtener el siguiente ID entero disponible para la columna cod_us
+    max_id = db.session.query(db.func.max(User.cod_us)).scalar()
+    try:
+        next_id = int(max_id) + 1 if max_id is not None else 1
+    except (ValueError, TypeError):
+        next_id = 1
+
     hashed_password = generate_password_hash(con_us)
     nuevo_usuario = User(
-        cod_us=nom_us,
+        cod_us=next_id,
         nom_us=nom_us,
         con_us=hashed_password,
         correo_usu=correo_usu,
