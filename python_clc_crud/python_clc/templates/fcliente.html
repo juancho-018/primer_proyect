@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block title %}Agregar Cliente - CLC Warm Pink MVC{% endblock %}
+
+{% block content %}
+<div style="max-width: 650px; margin: 2rem auto;">
+    <div class="card-pastel">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+            <h2><i class="fa-solid fa-user-plus"></i> Registrar Cliente</h2>
+            <a href="{{ url_for('cliente.tcliente') }}" class="btn-pastel btn-pink btn-sm"><i class="fa-solid fa-arrow-left"></i> Volver</a>
+        </div>
+
+        <form action="{{ url_for('cliente.add_cliente') }}" method="POST" class="form-pastel">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem;">
+                <div class="form-group">
+                    <label for="cod_cli"><i class="fa-solid fa-hashtag"></i> Código de Cliente</label>
+                    <input type="number" id="cod_cli" name="cod_cli" class="form-control-pastel" placeholder="Ej. 101" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="nom_cli"><i class="fa-solid fa-user"></i> Nombre Completo</label>
+                    <input type="text" id="nom_cli" name="nom_cli" class="form-control-pastel" placeholder="Ej. María Pérez" required>
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem;">
+                <div class="form-group">
+                    <label for="corr_cli"><i class="fa-solid fa-envelope"></i> Correo Electrónico</label>
+                    <input type="email" id="corr_cli" name="corr_cli" class="form-control-pastel" placeholder="cliente@gmail.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="sexo_cli"><i class="fa-solid fa-venus-mars"></i> Sexo</label>
+                    <select id="sexo_cli" name="sexo_cli" class="form-control-pastel">
+                        <option value="femenino">Femenino</option>
+                        <option value="masculino">Masculino</option>
+                        <option value="otro">Otro</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="direc_cli"><i class="fa-solid fa-location-dot"></i> Dirección</label>
+                <input type="text" id="direc_cli" name="direc_cli" class="form-control-pastel" placeholder="Ej. Calle 10 # 5-20" required>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem;">
+                <div class="form-group">
+                    <label for="tipoid_cli"><i class="fa-solid fa-id-card"></i> Tipo de Identificación</label>
+                    <select id="tipoid_cli" name="tipoid_cli" class="form-control-pastel">
+                        <option value="cedula de ciudadania">Cédula de Ciudadanía</option>
+                        <option value="tarjeta de identidad">Tarjeta de Identidad</option>
+                        <option value="cedula de extranjeria">Cédula de Extranjería</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="id_cli"><i class="fa-solid fa-fingerprint"></i> N° de Identificación</label>
+                    <input type="number" id="id_cli" name="id_cli" class="form-control-pastel" placeholder="Ej. 1095123456" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="fn_cli"><i class="fa-solid fa-calendar"></i> Fecha de Nacimiento</label>
+                <input type="date" id="fn_cli" name="fn_cli" class="form-control-pastel">
+            </div>
+
+            <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+                <button type="submit" class="btn-pastel btn-purple" style="flex: 1;"><i class="fa-solid fa-floppy-disk"></i> Guardar Cliente</button>
+                <button type="reset" class="btn-pastel btn-pink" style="flex: 1;"><i class="fa-solid fa-rotate-left"></i> Limpiar</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

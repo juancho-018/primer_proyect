@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block title %}Nosotros - CLC Crochet Magic{% endblock %}
+
+{% block content %}
+<div class="card-pastel" style="margin-bottom: 2rem;">
+    <div style="text-align: center; margin-bottom: 2rem;">
+        <span style="background: var(--pastel-pink); color: var(--accent-deep-pink); padding: 0.4rem 1.2rem; border-radius: 20px; font-weight: 600; font-size: 0.9rem;">
+            <i class="fa-solid fa-heart"></i> Hecho a Mano con Amor
+        </span>
+        <h1 style="font-size: 2.5rem; margin-top: 0.8rem; color: var(--accent-pink);">
+            CLC - La Magie Du Crochet
+        </h1>
+        <p class="subtitle" style="max-width: 800px; margin: 0 auto; font-size: 1.05rem;">
+            CLC es una empresa dedicada a crear productos y servicios de alta calidad elaborados artesanalmente en crochet con dedicación para que nuestros clientes descubran la verdadera magia del tejido a mano.
+        </p>
+    </div>
+
+    <!-- Video Oficial Promocional -->
+    <div style="margin: 2rem 0; text-align: center; background: #000; border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-soft);">
+        <video controls autoplay loop muted style="width: 100%; max-height: 460px; object-fit: cover; display: block;">
+            <source src="{{ url_for('static', filename='video.mp4') }}" type="video/mp4">
+            Tu navegador no soporta la reproducción de video HTML5.
+        </video>
+    </div>
+
+    <!-- Misión y Visión con Imágenes -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem; margin-top: 2.5rem;">
+        <!-- Misión -->
+        <div style="background: #ffffff; border-radius: var(--radius-md); border: 1px solid var(--card-border); overflow: hidden; box-shadow: var(--shadow-soft);">
+            <div style="height: 180px; overflow: hidden; background: var(--pastel-pink);">
+                <img src="{{ url_for('static', filename='img/mision.jpeg') }}" alt="Misión CLC" style="width: 100%; height: 100%; object-fit: cover;">
+            </div>
+            <div style="padding: 1.5rem;">
+                <h3 style="color: var(--accent-pink); margin-bottom: 0.6rem;"><i class="fa-solid fa-bullseye"></i> Nuestra Misión</h3>
+                <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.7;">
+                    Brindar productos y servicios de alta calidad hechos a mano en crochet con mucho cariño para los clientes, creando una experiencia única en blusas, trajes de baño, vestidos, amigurumis, accesorios y piezas personalizadas.
+                </p>
+            </div>
+        </div>
+
+        <!-- Visión -->
+        <div style="background: #ffffff; border-radius: var(--radius-md); border: 1px solid var(--card-border); overflow: hidden; box-shadow: var(--shadow-soft);">
+            <div style="height: 180px; overflow: hidden; background: var(--pastel-rose);">
+                <img src="{{ url_for('static', filename='img/vision.jpeg') }}" alt="Visión CLC" style="width: 100%; height: 100%; object-fit: cover;">
+            </div>
+            <div style="padding: 1.5rem;">
+                <h3 style="color: var(--accent-pink); margin-bottom: 0.6rem;"><i class="fa-solid fa-eye"></i> Nuestra Visión</h3>
+                <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.7;">
+                    Posicionarnos como la marca líder de moda y arte artesanal en crochet a nivel nacional e internacional, destacando por nuestra creatividad, innovación en tonos pastel y constante excelencia con nuestros clientes.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Canales de Contacto y Redes Sociales -->
+    <div style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--card-border); text-align: center;">
+        <h3 style="color: var(--accent-deep-pink); margin-bottom: 1.5rem;"><i class="fa-solid fa-comments"></i> Conéctate con Nosotros</h3>
+
+        <div style="display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap;">
+            <!-- WhatsApp -->
+            <a href="https://wa.me/573165716259" target="_blank" style="text-decoration: none; color: inherit; display: flex; flex-direction: column; align-items: center; gap: 0.4rem;">
+                <img src="{{ url_for('static', filename='img/whatsapp.png') }}" alt="WhatsApp" style="width: 50px; height: 50px; transition: transform 0.2s ease;" onmouseover="this.style.transform='scale(1.15)'" onmouseout="this.style.transform='scale(1.0)'">
+                <strong style="color: var(--accent-deep-pink);">WhatsApp</strong>
+                <span style="font-size: 0.85rem; color: var(--text-muted);">316 571 6259</span>
+            </a>
+
+            <!-- Instagram -->
+            <a href="https://www.instagram.com/clc_lmdc?igsh=MWRyMWxpMmYwajJveQ==" target="_blank" style="text-decoration: none; color: inherit; display: flex; flex-direction: column; align-items: center; gap: 0.4rem;">
+                <img src="{{ url_for('static', filename='img/ig.png') }}" alt="Instagram" style="width: 50px; height: 50px; transition: transform 0.2s ease;" onmouseover="this.style.transform='scale(1.15)'" onmouseout="this.style.transform='scale(1.0)'">
+                <strong style="color: var(--accent-deep-pink);">Instagram</strong>
+                <span style="font-size: 0.85rem; color: var(--text-muted);">@clc_lmdc</span>
+            </a>
+
+            <!-- Facebook -->
+            <a href="https://www.facebook.com/profile.php?id=61565358304406&mibextid=LQQJ4d" target="_blank" style="text-decoration: none; color: inherit; display: flex; flex-direction: column; align-items: center; gap: 0.4rem;">
+                <img src="{{ url_for('static', filename='img/facebook.png') }}" alt="Facebook" style="width: 50px; height: 50px; transition: transform 0.2s ease;" onmouseover="this.style.transform='scale(1.15)'" onmouseout="this.style.transform='scale(1.0)'">
+                <strong style="color: var(--accent-deep-pink);">Facebook</strong>
+                <span style="font-size: 0.85rem; color: var(--text-muted);">CLC Crochet</span>
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

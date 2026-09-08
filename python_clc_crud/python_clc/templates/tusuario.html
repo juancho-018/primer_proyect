@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block title %}CRUD Usuarios - CLC Pastel MVC{% endblock %}
+
+{% block content %}
+<div class="card-pastel">
+    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem;">
+        <div>
+            <h1><i class="fa-solid fa-users-gear"></i> Gestión de Usuarios</h1>
+            <p class="subtitle" style="margin-bottom: 0;">Administra las cuentas de usuario y administradores</p>
+        </div>
+        <a href="{{ url_for('usuario.crearusuario') }}" class="btn-pastel btn-purple">
+            <i class="fa-solid fa-user-plus"></i> Registrar Usuario
+        </a>
+    </div>
+
+    <!-- Formulario Búsqueda -->
+    <form action="{{ url_for('usuario.tusuario') }}" method="GET" style="display: flex; gap: 0.8rem; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap;">
+        <input type="text" name="cod_us" class="form-control-pastel" style="max-width: 280px;" placeholder="Buscar por Nombre/ID de Usuario..." value="{{ request.args.get('cod_us', '') }}">
+        <button type="submit" class="btn-pastel btn-blue btn-sm"><i class="fa-solid fa-magnifying-glass"></i> Consultar</button>
+        <a href="{{ url_for('usuario.tusuario') }}" class="btn-pastel btn-pink btn-sm"><i class="fa-solid fa-rotate-left"></i> Limpiar</a>
+    </form>
+
+    <div class="table-responsive">
+        <table class="table-pastel">
+            <thead>
+                <tr>
+                    <th>Código/ID</th>
+                    <th>Nombre de Usuario</th>
+                    <th>Correo Electrónico</th>
+                    <th>Rol</th>
+                    <th style="text-align: center;">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for u in usuarios %}
+                <tr>
+                    <td><strong>#{{ u.cod_us if u.cod_us is defined else u[0] }}</strong></td>
+                    <td>
+                        {{ u.nom_us if u.nom_us is defined else u[1] }}
+                        {% if (u.nom_us if u.nom_us is defined else u[1]) == 'admin' or (u.correo_usu if u.correo_usu is defined else u[3]) == 'admin@gmail.com' %}
+                            <span style="background: var(--pastel-pink); color: #9b2c2c; padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.75rem; font-weight: bold; margin-left: 0.4rem;">ADMIN</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ u.correo_usu if u.correo_usu is defined else u[3] }}</td>
+                    <td><span style="background: var(--pastel-lavender); color: var(--accent-purple); padding: 0.2rem 0.6rem; border-radius: 12px; font-size: 0.8rem;">{{ u.rol if u.rol is defined else 'usuario' }}</span></td>
+                    <td style="text-align: center; white-space: nowrap;">
+                        <a href="{{ url_for('usuario.obtener_usuario', cod_us=(u.cod_us if u.cod_us is defined else u[0])) }}" class="btn-pastel btn-blue btn-sm">
+                            <i class="fa-solid fa-pen-to-square"></i> Editar
+                        </a>
+                        <a href="{{ url_for('usuario.eliminar_usuario', cod_us=(u.cod_us if u.cod_us is defined else u[0])) }}" class="btn-pastel btn-pink btn-sm" onclick="confirmarEliminacion(event, this.href, '¿Eliminar usuario?');">
+                            <i class="fa-solid fa-trash"></i> Eliminar
+                        </a>
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="5" style="text-align: center; padding: 2rem; color: var(--text-muted);">
+                        No hay usuarios registrados.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

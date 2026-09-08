@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block title %}Editar Cliente - CLC Warm Pink MVC{% endblock %}
+
+{% block content %}
+<div style="max-width: 650px; margin: 2rem auto;">
+    <div class="card-pastel">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+            <h2><i class="fa-solid fa-user-pen"></i> Actualizar Cliente</h2>
+            <a href="{{ url_for('cliente.tcliente') }}" class="btn-pastel btn-pink btn-sm"><i class="fa-solid fa-arrow-left"></i> Volver</a>
+        </div>
+
+        {% set cod_val = cliente.cod_cli if cliente.cod_cli is defined else cliente[0] %}
+        {% set nom_val = cliente.nom_cli if cliente.nom_cli is defined else cliente[1] %}
+        {% set corr_val = cliente.corr_cli if cliente.corr_cli is defined else cliente[2] %}
+        {% set sexo_val = cliente.sexo_cli if cliente.sexo_cli is defined else cliente[3] %}
+        {% set direc_val = cliente.direc_cli if cliente.direc_cli is defined else cliente[4] %}
+        {% set tipoid_val = cliente.tipoid_cli if cliente.tipoid_cli is defined else cliente[5] %}
+        {% set id_val = cliente.id_cli if cliente.id_cli is defined else cliente[6] %}
+        {% set fn_val = cliente.fn_cli if cliente.fn_cli is defined else cliente[7] %}
+
+        <form action="{{ url_for('cliente.actualizar_cliente', cod_cli=cod_val) }}" method="POST" class="form-pastel">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem;">
+                <div class="form-group">
+                    <label><i class="fa-solid fa-hashtag"></i> Código de Cliente</label>
+                    <input type="text" class="form-control-pastel" value="#{{ cod_val }}" disabled>
+                </div>
+
+                <div class="form-group">
+                    <label for="nom_cli"><i class="fa-solid fa-user"></i> Nombre Completo</label>
+                    <input type="text" id="nom_cli" name="nom_cli" class="form-control-pastel" value="{{ nom_val }}" required>
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem;">
+                <div class="form-group">
+                    <label for="corr_cli"><i class="fa-solid fa-envelope"></i> Correo Electrónico</label>
+                    <input type="email" id="corr_cli" name="corr_cli" class="form-control-pastel" value="{{ corr_val }}" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="sexo_cli"><i class="fa-solid fa-venus-mars"></i> Sexo</label>
+                    <input type="text" id="sexo_cli" name="sexo_cli" class="form-control-pastel" value="{{ sexo_val }}">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="direc_cli"><i class="fa-solid fa-location-dot"></i> Dirección</label>
+                <input type="text" id="direc_cli" name="direc_cli" class="form-control-pastel" value="{{ direc_val }}" required>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem;">
+                <div class="form-group">
+                    <label for="tipoid_cli"><i class="fa-solid fa-id-card"></i> Tipo de Identificación</label>
+                    <input type="text" id="tipoid_cli" name="tipoid_cli" class="form-control-pastel" value="{{ tipoid_val }}">
+                </div>
+
+                <div class="form-group">
+                    <label for="id_cli"><i class="fa-solid fa-fingerprint"></i> N° de Identificación</label>
+                    <input type="number" id="id_cli" name="id_cli" class="form-control-pastel" value="{{ id_val }}" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="fn_cli"><i class="fa-solid fa-calendar"></i> Fecha de Nacimiento</label>
+                <input type="date" id="fn_cli" name="fn_cli" class="form-control-pastel" value="{{ fn_val }}">
+            </div>
+
+            <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+                <button type="submit" class="btn-pastel btn-purple" style="flex: 1;"><i class="fa-solid fa-floppy-disk"></i> Guardar Cambios</button>
+                <a href="{{ url_for('cliente.tcliente') }}" class="btn-pastel btn-pink" style="flex: 1;"><i class="fa-solid fa-xmark"></i> Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

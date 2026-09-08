@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block title %}Productos E-Commerce - CLC Pastel MVC{% endblock %}
+
+{% block content %}
+<div class="card-pastel" style="margin-bottom: 2rem;">
+    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 1rem;">
+        <div>
+            <h1><i class="fa-solid fa-bag-shopping"></i> Catálogo E-Commerce de Productos</h1>
+            <p class="subtitle" style="margin-bottom: 0;">Selecciona tus artículos favoritos hechos a mano en crochet</p>
+        </div>
+        <button onclick="abrirModalCarrito()" class="btn-pastel btn-purple">
+            <i class="fa-solid fa-cart-shopping"></i> Ver Carrito
+        </button>
+    </div>
+
+    <!-- Cuadrícula Dinámica de Productos -->
+    <div class="grid-cards">
+        {% for p in productos %}
+            {% set img_name = 'prd' ~ (loop.index % 5 + 1) ~ '.jpg' %}
+            {% if loop.index == 1 %}{% set img_name = 'prd1.jpeg' %}{% endif %}
+            {% if loop.index == 2 %}{% set img_name = 'prd2.jpg' %}{% endif %}
+            {% if loop.index == 3 %}{% set img_name = 'prd3.jpg' %}{% endif %}
+            {% if loop.index == 4 %}{% set img_name = 'prd4.jpg' %}{% endif %}
+            {% if loop.index == 5 %}{% set img_name = 'prd5.jpg' %}{% endif %}
+            {% set img_url = url_for('static', filename='img/' ~ img_name) %}
+
+            <div class="grid-card-item" style="overflow: hidden; padding: 0;">
+                <div style="width: 100%; height: 220px; overflow: hidden; background: var(--pastel-lavender); position: relative;">
+                    <img src="{{ img_url }}" alt="{{ p.nom_p }}" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1.0)'">
+                    <span style="position: absolute; top: 12px; right: 12px; background: rgba(255,255,255,0.9); color: var(--accent-purple); padding: 0.3rem 0.7rem; border-radius: 12px; font-weight: 700; font-size: 0.8rem; backdrop-filter: blur(4px);">
+                        {{ p.tipo_p if p.tipo_p else 'Crochet' }}
+                    </span>
+                </div>
+                <div style="padding: 1.4rem; display: flex; flex-direction: column; gap: 0.5rem; flex: 1;">
+                    <h3 style="margin: 0; font-size: 1.2rem; color: var(--text-dark);">{{ p.nom_p }}</h3>
+                    <p style="font-size: 0.88rem; color: var(--text-muted); margin: 0;">
+                        Color: <strong>{{ p.col_p }}</strong> | Talla: <strong>{{ p.tam_p }}</strong>
+                    </p>
+                    <div style="margin-top: auto; padding-top: 0.8rem; display: flex; justify-content: space-between; align-items: center;">
+                        <span style="font-size: 1.2rem; font-weight: 800; color: var(--accent-purple);">{{ p.pre_p }}</span>
+                        <button onclick="agregarAlCarrito({{ p.cod_p }}, '{{ p.nom_p }}', '{{ p.pre_p }}', '{{ img_url }}')" class="btn-pastel btn-pink btn-sm">
+                            <i class="fa-solid fa-cart-plus"></i> Añadir
+                        </button>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div style="grid-column: 1 / -1; text-align: center; padding: 3rem; color: var(--text-muted);">
+                <i class="fa-solid fa-box-open" style="font-size: 3rem; margin-bottom: 1rem;"></i>
+                <p>No se encontraron productos registrados en la base de datos.</p>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block title %}CRUD Categorías - CLC Pastel MVC{% endblock %}
+
+{% block content %}
+<div class="card-pastel">
+    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem;">
+        <div>
+            <h1><i class="fa-solid fa-tags"></i> Gestión de Categorías</h1>
+            <p class="subtitle" style="margin-bottom: 0;">Administra las clasificaciones de los productos</p>
+        </div>
+        <a href="{{ url_for('categoria.crearcategoria') }}" class="btn-pastel btn-purple">
+            <i class="fa-solid fa-plus"></i> Agregar Categoría
+        </a>
+    </div>
+
+    <!-- Formulario de Búsqueda -->
+    <form action="{{ url_for('categoria.tcategoria') }}" method="GET" style="display: flex; gap: 0.8rem; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap;">
+        <input type="number" name="cod_c" class="form-control-pastel" style="max-width: 250px;" placeholder="Buscar por Código de Categoría..." value="{{ request.args.get('cod_c', '') }}">
+        <button type="submit" class="btn-pastel btn-blue btn-sm"><i class="fa-solid fa-magnifying-glass"></i> Consultar</button>
+        <a href="{{ url_for('categoria.tcategoria') }}" class="btn-pastel btn-pink btn-sm"><i class="fa-solid fa-rotate-left"></i> Limpiar</a>
+    </form>
+
+    <div class="table-responsive">
+        <table class="table-pastel">
+            <thead>
+                <tr>
+                    <th>Código Categoría</th>
+                    <th>Nombre Categoría</th>
+                    <th style="text-align: center;">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for c in categorias %}
+                <tr>
+                    <td><strong>#{{ c.cod_c if c.cod_c is defined else c[0] }}</strong></td>
+                    <td>{{ c.nom_c if c.nom_c is defined else c[1] }}</td>
+                    <td style="text-align: center; white-space: nowrap;">
+                        <a href="{{ url_for('categoria.obtener_categoria', cod_c=(c.cod_c if c.cod_c is defined else c[0])) }}" class="btn-pastel btn-blue btn-sm">
+                            <i class="fa-solid fa-pen-to-square"></i> Editar
+                        </a>
+                        <a href="{{ url_for('categoria.eliminar_categoria', cod_c=(c.cod_c if c.cod_c is defined else c[0])) }}" class="btn-pastel btn-pink btn-sm" onclick="confirmarEliminacion(event, this.href, '¿Eliminar categoría?');">
+                            <i class="fa-solid fa-trash"></i> Eliminar
+                        </a>
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="3" style="text-align: center; padding: 2rem; color: var(--text-muted);">
+                        No hay categorías registradas.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

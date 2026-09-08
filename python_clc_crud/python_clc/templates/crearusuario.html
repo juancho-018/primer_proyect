@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}Crear Usuario - CLC Warm Pink MVC{% endblock %}
+
+{% block content %}
+<div style="max-width: 550px; margin: 2rem auto;">
+    <div class="card-pastel">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+            <h2><i class="fa-solid fa-user-plus"></i> Registrar Usuario</h2>
+            <a href="{{ url_for('usuario.tusuario') }}" class="btn-pastel btn-pink btn-sm"><i class="fa-solid fa-arrow-left"></i> Volver</a>
+        </div>
+
+        <form action="{{ url_for('usuario.add_usuario') }}" method="POST" class="form-pastel">
+            <div class="form-group">
+                <label for="nom_us"><i class="fa-solid fa-user"></i> Nombre de Usuario</label>
+                <input type="text" id="nom_us" name="nom_us" class="form-control-pastel" placeholder="Ej. juan_meneses" required>
+            </div>
+
+            <div class="form-group">
+                <label for="correo_usu"><i class="fa-solid fa-envelope"></i> Correo Electrónico</label>
+                <input type="email" id="correo_usu" name="correo_usu" class="form-control-pastel" placeholder="usuario@gmail.com" required>
+            </div>
+
+            <div class="form-group">
+                <label for="con_us"><i class="fa-solid fa-lock"></i> Contraseña</label>
+                <input type="password" id="con_us" name="con_us" class="form-control-pastel" placeholder="••••••••" required>
+            </div>
+
+            <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+                <button type="submit" class="btn-pastel btn-purple" style="flex: 1;"><i class="fa-solid fa-floppy-disk"></i> Guardar Usuario</button>
+                <button type="reset" class="btn-pastel btn-pink" style="flex: 1;"><i class="fa-solid fa-rotate-left"></i> Limpiar</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block title %}CRUD Clientes - CLC Pastel MVC{% endblock %}
+
+{% block content %}
+<div class="card-pastel">
+    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem;">
+        <div>
+            <h1><i class="fa-solid fa-address-book"></i> Gestión de Clientes</h1>
+            <p class="subtitle" style="margin-bottom: 0;">Administra los datos de los clientes registrados</p>
+        </div>
+        <a href="{{ url_for('cliente.fcliente') }}" class="btn-pastel btn-purple">
+            <i class="fa-solid fa-user-plus"></i> Agregar Cliente
+        </a>
+    </div>
+
+    <!-- Formulario de Búsqueda -->
+    <form action="{{ url_for('cliente.tcliente') }}" method="GET" style="display: flex; gap: 0.8rem; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap;">
+        <input type="number" name="cod_cli" class="form-control-pastel" style="max-width: 250px;" placeholder="Buscar por Código de Cliente..." value="{{ request.args.get('cod_cli', '') }}">
+        <button type="submit" class="btn-pastel btn-blue btn-sm"><i class="fa-solid fa-magnifying-glass"></i> Consultar</button>
+        <a href="{{ url_for('cliente.tcliente') }}" class="btn-pastel btn-pink btn-sm"><i class="fa-solid fa-rotate-left"></i> Limpiar</a>
+    </form>
+
+    <!-- Tabla Pastel -->
+    <div class="table-responsive">
+        <table class="table-pastel">
+            <thead>
+                <tr>
+                    <th>Código</th>
+                    <th>Nombre</th>
+                    <th>Correo</th>
+                    <th>Sexo</th>
+                    <th>Dirección</th>
+                    <th>Tipo Doc.</th>
+                    <th>N° Identificación</th>
+                    <th>F. Nacimiento</th>
+                    <th style="text-align: center;">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for cli in clientes %}
+                <tr>
+                    <td><strong>#{{ cli.cod_cli if cli.cod_cli is defined else cli[0] }}</strong></td>
+                    <td>{{ cli.nom_cli if cli.nom_cli is defined else cli[1] }}</td>
+                    <td>{{ cli.corr_cli if cli.corr_cli is defined else cli[2] }}</td>
+                    <td>{{ cli.sexo_cli if cli.sexo_cli is defined else cli[3] }}</td>
+                    <td>{{ cli.direc_cli if cli.direc_cli is defined else cli[4] }}</td>
+                    <td>{{ cli.tipoid_cli if cli.tipoid_cli is defined else cli[5] }}</td>
+                    <td>{{ cli.id_cli if cli.id_cli is defined else cli[6] }}</td>
+                    <td>{{ cli.fn_cli if cli.fn_cli is defined else cli[7] }}</td>
+                    <td style="text-align: center; white-space: nowrap;">
+                        <a href="{{ url_for('cliente.obtener_cliente', cod_cli=(cli.cod_cli if cli.cod_cli is defined else cli[0])) }}" class="btn-pastel btn-blue btn-sm">
+                            <i class="fa-solid fa-pen-to-square"></i> Editar
+                        </a>
+                        <a href="{{ url_for('cliente.eliminar_cliente', cod_cli=(cli.cod_cli if cli.cod_cli is defined else cli[0])) }}" class="btn-pastel btn-pink btn-sm" onclick="confirmarEliminacion(event, this.href, '¿Eliminar cliente?');">
+                            <i class="fa-solid fa-trash"></i> Eliminar
+                        </a>
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="9" style="text-align: center; padding: 2rem; color: var(--text-muted);">
+                        No hay clientes registrados o coincidentes con la búsqueda.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

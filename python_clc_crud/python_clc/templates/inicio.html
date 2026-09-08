@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}Inicio - CLC Crochet Magic{% endblock %}
+
+{% block content %}
+<div class="card-pastel" style="padding: 3rem 2rem; margin-bottom: 2rem; text-align: center;">
+    <span style="background: var(--pastel-pink); color: #9b2c2c; padding: 0.4rem 1rem; border-radius: 20px; font-weight: 600; font-size: 0.9rem;">
+        <i class="fa-solid fa-heart"></i> Arte Hecho a Mano
+    </span>
+    <h1 style="font-size: 2.8rem; margin-top: 1rem; color: var(--accent-purple);">
+        CLC - La Magie Du Crochet
+    </h1>
+    <p class="subtitle" style="max-width: 750px; margin: 0 auto 2rem auto; font-size: 1.1rem; line-height: 1.8;">
+        Descubre la magia del tejido a mano en crochet. Te ofrecemos prendas exclusivas, amigurumis, vestidos, accesorios y piezas personalizadas con la mejor calidad y dedicación.
+    </p>
+
+    <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+        <a href="{{ url_for('main.products') }}" class="btn-pastel btn-purple">
+            <i class="fa-solid fa-bag-shopping"></i> Ver Productos
+        </a>
+        <a href="{{ url_for('main.seccion') }}" class="btn-pastel btn-blue">
+            <i class="fa-solid fa-layer-group"></i> Explorar Catálogo
+        </a>
+        {% if not current_user.is_authenticated %}
+        <a href="{{ url_for('auth.login') }}" class="btn-pastel btn-pink">
+            <i class="fa-solid fa-right-to-bracket"></i> Iniciar Sesión
+        </a>
+        {% endif %}
+    </div>
+</div>
+
+<div class="grid-cards">
+    <div class="grid-card-item">
+        <div class="grid-card-icon"><i class="fa-solid fa-shirt"></i></div>
+        <h3>Moda y Prendas</h3>
+        <p style="font-size: 0.9rem; color: var(--text-muted);">Vestidos, tops, trajes de baño y chaquetas tejidas a mano con hilo de primera calidad.</p>
+    </div>
+
+    <div class="grid-card-item">
+        <div class="grid-card-icon" style="background: var(--pastel-pink); color: #d63031;"><i class="fa-solid fa-shield-cat"></i></div>
+        <h3>Amigurumis</h3>
+        <p style="font-size: 0.9rem; color: var(--text-muted);">Peluches y figuras tejidas ideales para regalos inolvidables y momentos especiales.</p>
+    </div>
+
+    <div class="grid-card-item">
+        <div class="grid-card-icon" style="background: var(--pastel-yellow); color: #d69e2e;"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+        <h3>Personalizados</h3>
+        <p style="font-size: 0.9rem; color: var(--text-muted);">Realizamos tus ideas según tus medidas, tonos favoritos y especificaciones.</p>
+    </div>
+</div>
+{% endblock %}

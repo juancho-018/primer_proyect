@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block title %}CRUD Proveedores - CLC Pastel MVC{% endblock %}
+
+{% block content %}
+<div class="card-pastel">
+    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem;">
+        <div>
+            <h1><i class="fa-solid fa-truck-field"></i> Gestión de Proveedores</h1>
+            <p class="subtitle" style="margin-bottom: 0;">Administra el registro y contacto de los proveedores</p>
+        </div>
+        <a href="{{ url_for('proveedor.crearproveedor') }}" class="btn-pastel btn-purple">
+            <i class="fa-solid fa-plus"></i> Agregar Proveedor
+        </a>
+    </div>
+
+    <!-- Formulario de Búsqueda -->
+    <form action="{{ url_for('proveedor.tproveedor') }}" method="GET" style="display: flex; gap: 0.8rem; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap;">
+        <input type="number" name="cod_prov" class="form-control-pastel" style="max-width: 250px;" placeholder="Buscar por Código de Proveedor..." value="{{ request.args.get('cod_prov', '') }}">
+        <button type="submit" class="btn-pastel btn-blue btn-sm"><i class="fa-solid fa-magnifying-glass"></i> Consultar</button>
+        <a href="{{ url_for('proveedor.tproveedor') }}" class="btn-pastel btn-pink btn-sm"><i class="fa-solid fa-rotate-left"></i> Limpiar</a>
+    </form>
+
+    <div class="table-responsive">
+        <table class="table-pastel">
+            <thead>
+                <tr>
+                    <th>Código</th>
+                    <th>Nombre</th>
+                    <th>Teléfono</th>
+                    <th>Transporte</th>
+                    <th>Edad</th>
+                    <th>Dirección</th>
+                    <th>Sexo</th>
+                    <th>Tipo Doc.</th>
+                    <th>Identificación</th>
+                    <th>Correo</th>
+                    <th style="text-align: center;">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for p in proveedores %}
+                <tr>
+                    <td><strong>#{{ p.cod_prov if p.cod_prov is defined else p[0] }}</strong></td>
+                    <td>{{ p.nom_prov if p.nom_prov is defined else p[1] }}</td>
+                    <td>{{ p.tel_prov if p.tel_prov is defined else p[2] }}</td>
+                    <td>{{ p.trans_prov if p.trans_prov is defined else p[3] }}</td>
+                    <td>{{ p.edad_prov if p.edad_prov is defined else p[4] }}</td>
+                    <td>{{ p.direc_prov if p.direc_prov is defined else p[5] }}</td>
+                    <td>{{ p.sexo_prov if p.sexo_prov is defined else p[6] }}</td>
+                    <td>{{ p.tipoid_prov if p.tipoid_prov is defined else p[7] }}</td>
+                    <td>{{ p.id_prov if p.id_prov is defined else p[8] }}</td>
+                    <td>{{ p.corr_prov if p.corr_prov is defined else p[9] }}</td>
+                    <td style="text-align: center; white-space: nowrap;">
+                        <a href="{{ url_for('proveedor.obtener_proveedor', cod_prov=(p.cod_prov if p.cod_prov is defined else p[0])) }}" class="btn-pastel btn-blue btn-sm">
+                            <i class="fa-solid fa-pen-to-square"></i> Editar
+                        </a>
+                        <a href="{{ url_for('proveedor.eliminar_proveedor', cod_prov=(p.cod_prov if p.cod_prov is defined else p[0])) }}" class="btn-pastel btn-pink btn-sm" onclick="confirmarEliminacion(event, this.href, '¿Eliminar proveedor?');">
+                            <i class="fa-solid fa-trash"></i> Eliminar
+                        </a>
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="11" style="text-align: center; padding: 2rem; color: var(--text-muted);">
+                        No hay proveedores registrados.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

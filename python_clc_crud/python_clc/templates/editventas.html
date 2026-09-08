@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}Editar Venta - CLC Warm Pink MVC{% endblock %}
+
+{% block content %}
+<div style="max-width: 550px; margin: 2rem auto;">
+    <div class="card-pastel">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+            <h2><i class="fa-solid fa-pen-to-square"></i> Editar Venta</h2>
+            <a href="{{ url_for('venta.tventa') }}" class="btn-pastel btn-pink btn-sm"><i class="fa-solid fa-arrow-left"></i> Volver</a>
+        </div>
+
+        {% set cod_val = ventas.cod_ven if ventas.cod_ven is defined else ventas[0] %}
+        {% set cod_pe_val = ventas.cod_pe1 if ventas.cod_pe1 is defined else ventas[1] %}
+        {% set cod_p_val = ventas.cod_p1 if ventas.cod_p1 is defined else ventas[2] %}
+
+        <form action="{{ url_for('venta.actualizar_ventas', cod_ven=cod_val) }}" method="POST" class="form-pastel">
+            <div class="form-group">
+                <label><i class="fa-solid fa-hashtag"></i> Código Venta</label>
+                <input type="text" class="form-control-pastel" value="#{{ cod_val }}" disabled>
+            </div>
+
+            <div class="form-group">
+                <label for="cod_pe1"><i class="fa-solid fa-receipt"></i> Código Pedido</label>
+                <input type="number" id="cod_pe1" name="cod_pe1" class="form-control-pastel" value="{{ cod_pe_val }}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="cod_p1"><i class="fa-solid fa-box"></i> Código Producto</label>
+                <input type="number" id="cod_p1" name="cod_p1" class="form-control-pastel" value="{{ cod_p_val }}" required>
+            </div>
+
+            <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+                <button type="submit" class="btn-pastel btn-purple" style="flex: 1;"><i class="fa-solid fa-floppy-disk"></i> Guardar Cambios</button>
+                <a href="{{ url_for('venta.tventa') }}" class="btn-pastel btn-pink" style="flex: 1;"><i class="fa-solid fa-xmark"></i> Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

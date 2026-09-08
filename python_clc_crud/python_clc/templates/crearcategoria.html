@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}Crear Categoría - CLC Warm Pink MVC{% endblock %}
+
+{% block content %}
+<div style="max-width: 550px; margin: 2rem auto;">
+    <div class="card-pastel">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+            <h2><i class="fa-solid fa-folder-plus"></i> Crear Categoría</h2>
+            <a href="{{ url_for('categoria.tcategoria') }}" class="btn-pastel btn-pink btn-sm"><i class="fa-solid fa-arrow-left"></i> Volver</a>
+        </div>
+
+        <form action="{{ url_for('categoria.add_categoria') }}" method="POST" class="form-pastel">
+            <div class="form-group">
+                <label for="cod_c"><i class="fa-solid fa-hashtag"></i> Código Categoría</label>
+                <input type="number" id="cod_c" name="cod_c" class="form-control-pastel" placeholder="Ej. 11" required>
+            </div>
+
+            <div class="form-group">
+                <label for="nom_c"><i class="fa-solid fa-tag"></i> Nombre de la Categoría</label>
+                <input type="text" id="nom_c" name="nom_c" class="form-control-pastel" placeholder="Ej. Accesorios Tejidos" required>
+            </div>
+
+            <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+                <button type="submit" class="btn-pastel btn-purple" style="flex: 1;"><i class="fa-solid fa-floppy-disk"></i> Guardar Categoría</button>
+                <button type="reset" class="btn-pastel btn-pink" style="flex: 1;"><i class="fa-solid fa-rotate-left"></i> Limpiar</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}Catálogo Dinámico - CLC Pastel MVC{% endblock %}
+
+{% block content %}
+<div class="card-pastel" style="margin-bottom: 2rem;">
+    <h1><i class="fa-solid fa-layer-group"></i> Catálogo y Secciones de Productos</h1>
+    <p class="subtitle">Explora los productos divididos por categorías registrados en el sistema</p>
+
+    <!-- Categorías -->
+    <div style="display: flex; gap: 0.6rem; flex-wrap: wrap; margin-bottom: 2rem;">
+        <span class="btn-pastel btn-purple btn-sm"><i class="fa-solid fa-border-all"></i> Todas</span>
+        {% for cat in categorias %}
+            <span class="btn-pastel btn-blue btn-sm">{{ cat.nom_c }}</span>
+        {% endfor %}
+    </div>
+
+    <!-- Galería Dinámica -->
+    <div class="grid-cards">
+        {% for p in productos %}
+            {% set img_name = 'prd' ~ (loop.index % 5 + 1) ~ '.jpg' %}
+            {% if loop.index == 1 %}{% set img_name = 'prd1.jpeg' %}{% endif %}
+            {% if loop.index == 2 %}{% set img_name = 'prd2.jpg' %}{% endif %}
+            {% if loop.index == 3 %}{% set img_name = 'prd3.jpg' %}{% endif %}
+            {% if loop.index == 4 %}{% set img_name = 'prd4.jpg' %}{% endif %}
+            {% if loop.index == 5 %}{% set img_name = 'prd5.jpg' %}{% endif %}
+            {% set img_url = url_for('static', filename='img/' ~ img_name) %}
+
+            <div class="grid-card-item" style="overflow: hidden; padding: 0;">
+                <div style="width: 100%; height: 200px; overflow: hidden; background: var(--pastel-lavender);">
+                    <img src="{{ img_url }}" alt="{{ p.nom_p }}" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+                <div style="padding: 1.2rem; display: flex; flex-direction: column; gap: 0.4rem; flex: 1;">
+                    <h3 style="margin: 0; font-size: 1.1rem; color: var(--text-dark);">{{ p.nom_p }}</h3>
+                    <p style="font-size: 0.85rem; color: var(--text-muted);">{{ p.tipo_p }} - {{ p.col_p }}</p>
+                    <div style="margin-top: auto; padding-top: 0.6rem; display: flex; justify-content: space-between; align-items: center;">
+                        <span style="font-size: 1.1rem; font-weight: 700; color: var(--accent-purple);">{{ p.pre_p }}</span>
+                        <button onclick="agregarAlCarrito({{ p.cod_p }}, '{{ p.nom_p }}', '{{ p.pre_p }}', '{{ img_url }}')" class="btn-pastel btn-pink btn-sm">
+                            <i class="fa-solid fa-cart-plus"></i> Comprar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

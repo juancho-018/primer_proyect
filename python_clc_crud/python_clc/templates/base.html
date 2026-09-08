@@ -1,0 +1,450 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      {% block title %}CLC App - E-Commerce & Gestión Pastel MVC{% endblock %}
+    </title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- FontAwesome Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <!-- DataTables CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css"
+    />
+    <!-- SweetAlert2 CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css"
+    />
+    <!-- Estilos Pastel Unificados -->
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/main_pastel.css') }}"
+    />
+    {% block extra_css %}{% endblock %}
+  </head>
+  <body>
+    <!-- Navbar Pastel con Logo Oficial y Carrito -->
+    <nav class="navbar-pastel">
+      <div class="nav-container">
+        <a href="{{ url_for('main.inicio') }}" class="nav-brand">
+          <img
+            src="{{ url_for('static', filename='img/logofondono.png') }}"
+            alt="CLC Logo"
+            style="height: 40px; width: auto; vertical-align: middle"
+          />
+        </a>
+
+        <ul class="nav-menu">
+          <li>
+            <a href="{{ url_for('main.inicio') }}"
+              ><i class="fa-solid fa-house"></i> Inicio</a
+            >
+          </li>
+          <li>
+            <a href="{{ url_for('main.products') }}"
+              ><i class="fa-solid fa-bag-shopping"></i> Productos</a
+            >
+          </li>
+          <li>
+            <a href="{{ url_for('main.seccion') }}"
+              ><i class="fa-solid fa-layer-group"></i> Catálogo</a
+            >
+          </li>
+          <li>
+            <a href="{{ url_for('main.nosotros') }}"
+              ><i class="fa-solid fa-users"></i> Nosotros</a
+            >
+          </li>
+
+          <!-- Botón de Carrito con Contador Dinámico -->
+          <li>
+            <button
+              onclick="abrirModalCarrito()"
+              class="btn-pastel btn-blue btn-sm"
+              style="position: relative"
+            >
+              <i class="fa-solid fa-cart-shopping"></i> Carrito
+              <span
+                id="cart-counter"
+                style="
+                  background: var(--accent-pink);
+                  color: #ffffff;
+                  border-radius: 12px;
+                  padding: 0.15rem 0.55rem;
+                  font-size: 0.75rem;
+                  font-weight: bold;
+                  margin-left: 0.3rem;
+                "
+                >0</span
+              >
+            </button>
+          </li>
+
+          {% if current_user.is_authenticated %}
+          <li>
+            <a href="{{ url_for('main.inicioadmin') }}"
+              ><i class="fa-solid fa-chart-line"></i> Dashboard</a
+            >
+          </li>
+          <li>
+            <a
+              href="{{ url_for('auth.logout') }}"
+              class="btn-pastel btn-pink btn-sm"
+              ><i class="fa-solid fa-right-from-bracket"></i> Salir</a
+            >
+          </li>
+          {% else %}
+          <li>
+            <a href="{{ url_for('auth.login') }}" class="btn-pastel-primary"
+              ><i class="fa-solid fa-right-to-bracket"></i> Ingresar</a
+            >
+          </li>
+          {% endif %}
+        </ul>
+      </div>
+    </nav>
+
+    <!-- Contenido Principal -->
+    <main class="app-container">{% block content %}{% endblock %}</main>
+
+    <!-- Modal de Carrito de Compras -->
+    <div
+      id="cartModal"
+      style="
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(5px);
+        z-index: 2000;
+        justify-content: center;
+        align-items: center;
+      "
+    >
+      <div
+        class="card-pastel"
+        style="
+          width: 90%;
+          max-width: 550px;
+          max-height: 85vh;
+          overflow-y: auto;
+          position: relative;
+          animation: fadeIn 0.25s ease;
+        "
+      >
+        <div
+          style="
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--card-border);
+            padding-bottom: 1rem;
+            margin-bottom: 1rem;
+          "
+        >
+          <h3 style="margin: 0; color: var(--accent-purple)">
+            <i class="fa-solid fa-cart-shopping"></i> Tu Carrito de Compras
+          </h3>
+          <button
+            onclick="cerrarModalCarrito()"
+            style="
+              background: none;
+              border: none;
+              font-size: 1.5rem;
+              cursor: pointer;
+              color: var(--text-muted);
+            "
+          >
+            &times;
+          </button>
+        </div>
+
+        <div id="cart-items-container">
+          <!-- Ítems del carrito insertados vía JS -->
+        </div>
+
+        <div
+          style="
+            border-top: 1px solid var(--card-border);
+            padding-top: 1rem;
+            margin-top: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+          "
+        >
+          <span
+            style="font-size: 1.1rem; font-weight: 700; color: var(--text-dark)"
+            >Total:
+            <span id="cart-total-price" style="color: var(--accent-purple)"
+              >$0</span
+            ></span
+          >
+          <div style="display: flex; gap: 0.5rem">
+            <button
+              onclick="vaciarCarrito()"
+              class="btn-pastel btn-pink btn-sm"
+            >
+              <i class="fa-solid fa-trash"></i> Vaciar
+            </button>
+            <button onclick="simularCompra()" class="btn-pastel btn-purple">
+              <i class="fa-solid fa-credit-card"></i> Simular Compra
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer Pastel -->
+    <footer class="footer-pastel">
+      <p>&copy; Proyecto del 2024 CLC retomado por Juan Meneses en el 2026</p>
+    </footer>
+
+    <!-- Scripts: jQuery, DataTables & SweetAlert2 -->
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+      // Sistema de Carrito en LocalStorage
+      let carrito = JSON.parse(localStorage.getItem('clc_carrito')) || [];
+
+      function guardarCarrito() {
+          localStorage.setItem('clc_carrito', JSON.stringify(carrito));
+          actualizarContador();
+      }
+
+      function actualizarContador() {
+          const totalCount = carrito.reduce((sum, item) => sum + item.cantidad, 0);
+          document.getElementById('cart-counter').innerText = totalCount;
+      }
+
+      function agregarAlCarrito(cod_p, nom_p, pre_p, img_src) {
+          // Extraer número de precio
+          let pre_clean = parseInt(pre_p.toString().replace(/[^0-9]/g, '')) || 50000;
+
+          const itemExistente = carrito.find(item => item.cod_p === cod_p);
+          if (itemExistente) {
+              itemExistente.cantidad += 1;
+          } else {
+              carrito.push({
+                  cod_p: cod_p,
+                  nom_p: nom_p,
+                  pre_p: pre_p,
+                  precio_num: pre_clean,
+                  img_src: img_src,
+                  cantidad: 1
+              });
+          }
+          guardarCarrito();
+
+          Swal.fire({
+              toast: true,
+              position: 'top-end',
+              icon: 'success',
+              title: `¡${nom_p} añadido al carrito!`,
+              showConfirmButton: false,
+              timer: 2000
+          });
+      }
+
+      function abrirModalCarrito() {
+          renderizarCarrito();
+          document.getElementById('cartModal').style.display = 'flex';
+      }
+
+      function cerrarModalCarrito() {
+          document.getElementById('cartModal').style.display = 'none';
+      }
+
+      function renderizarCarrito() {
+          const container = document.getElementById('cart-items-container');
+          if (carrito.length === 0) {
+              container.innerHTML = `<div style="text-align:center; padding: 2rem; color: var(--text-muted);">
+                  <i class="fa-solid fa-cart-arrow-down" style="font-size: 2.5rem; margin-bottom: 0.5rem;"></i>
+                  <p>Tu carrito está vacío</p>
+              </div>`;
+              document.getElementById('cart-total-price').innerText = '$0';
+              return;
+          }
+
+          let html = '<div style="display: flex; flex-direction: column; gap: 0.8rem;">';
+          let total = 0;
+
+          carrito.forEach(item => {
+              const subtotal = item.precio_num * item.cantidad;
+              total += subtotal;
+
+              html += `
+              <div style="display: flex; align-items: center; justify-content: space-between; background: #ffffff; padding: 0.8rem; border-radius: var(--radius-sm); border: 1px solid var(--card-border);">
+                  <div style="display: flex; align-items: center; gap: 0.8rem;">
+                      <img src="${item.img_src}" alt="${item.nom_p}" style="width: 48px; height: 48px; object-fit: cover; border-radius: var(--radius-sm);">
+                      <div>
+                          <strong style="font-size: 0.95rem; color: var(--text-dark);">${item.nom_p}</strong><br>
+                          <span style="font-size: 0.85rem; color: var(--accent-purple); font-weight: 600;">${item.pre_p}</span>
+                      </div>
+                  </div>
+                  <div style="display: flex; align-items: center; gap: 0.5rem;">
+                      <button onclick="cambiarCantidad(${item.cod_p}, -1)" class="btn-pastel btn-pink btn-sm" style="padding: 0.2rem 0.5rem;">-</button>
+                      <span style="font-weight: bold;">${item.cantidad}</span>
+                      <button onclick="cambiarCantidad(${item.cod_p}, 1)" class="btn-pastel btn-blue btn-sm" style="padding: 0.2rem 0.5rem;">+</button>
+                  </div>
+              </div>`;
+          });
+
+          html += '</div>';
+          container.innerHTML = html;
+          document.getElementById('cart-total-price').innerText = `$${total.toLocaleString('es-CO')}`;
+      }
+
+      function cambiarCantidad(cod_p, delta) {
+          const item = carrito.find(i => i.cod_p === cod_p);
+          if (item) {
+              item.cantidad += delta;
+              if (item.cantidad <= 0) {
+                  carrito = carrito.filter(i => i.cod_p !== cod_p);
+              }
+              guardarCarrito();
+              renderizarCarrito();
+          }
+      }
+
+      function vaciarCarrito() {
+          carrito = [];
+          guardarCarrito();
+          renderizarCarrito();
+      }
+
+      function simularCompra() {
+          if (carrito.length === 0) {
+              Swal.fire({
+                  icon: 'info',
+                  title: 'Carrito Vacío',
+                  text: 'Agrega al menos un producto para realizar la compra.',
+                  confirmButtonColor: '#6c5ce7'
+              });
+              return;
+          }
+
+          Swal.fire({
+              title: 'Procesando Simulación de Compra',
+              text: 'Enviando transacción a la base de datos...',
+              allowOutsideClick: false,
+              didOpen: () => {
+                  Swal.showLoading();
+              }
+          });
+
+          fetch('/simular_compra', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ items: carrito })
+          })
+          .then(response => response.json())
+          .then(data => {
+              if (data.status === 'success') {
+                  const pedidoId = data.pedido_id;
+                  const totalFormatted = data.monto_total;
+                  vaciarCarrito();
+                  cerrarModalCarrito();
+
+                  Swal.fire({
+                      icon: 'success',
+                      title: '¡Compra Exitosa!',
+                      html: `
+                          <div style="text-align: left; background: var(--bg-main); padding: 1rem; border-radius: 12px; margin-top: 0.8rem;">
+                              <p><strong>N° Pedido Generado:</strong> #${pedidoId}</p>
+                              <p><strong>Total Transacción:</strong> ${totalFormatted}</p>
+                              <p><strong>Registros creados en BD:</strong> Tabla <code>pedido</code> y <code>ventas</code></p>
+                          </div>
+                      `,
+                      confirmButtonText: '<i class="fa-solid fa-check"></i> Aceptar',
+                      confirmButtonColor: '#6c5ce7'
+                  });
+              } else {
+                  Swal.fire({
+                      icon: 'error',
+                      title: 'Error en la Compra',
+                      text: data.message || 'No se pudo procesar la transacción.',
+                      confirmButtonColor: '#6c5ce7'
+                  });
+              }
+          })
+          .catch(err => {
+              Swal.fire({
+                  icon: 'error',
+                  title: 'Error de Red',
+                  text: 'Ocurrió un error conectando con el servidor.',
+                  confirmButtonColor: '#6c5ce7'
+              });
+          });
+      }
+
+      // Configuración Global de DataTables
+      $(document).ready(function() {
+          actualizarContador();
+          if ($('.table-pastel').length > 0) {
+              $('.table-pastel').DataTable({
+                  language: {
+                      url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json'
+                  },
+                  pageLength: 8,
+                  responsive: true
+              });
+          }
+      });
+
+      function confirmarEliminacion(event, url, titulo = '¿Estás seguro?') {
+          event.preventDefault();
+          Swal.fire({
+              title: titulo,
+              text: "Esta acción no se puede deshacer.",
+              icon: 'warning',
+              showCancelButton: true,
+              confirmButtonColor: '#d63031',
+              cancelButtonColor: '#6c5ce7',
+              confirmButtonText: '<i class="fa-solid fa-trash"></i> Sí, eliminar',
+              cancelButtonText: 'Cancelar'
+          }).then((result) => {
+              if (result.isConfirmed) {
+                  window.location.href = url;
+              }
+          });
+      }
+
+      // Renderizar Notificaciones Flash con SweetAlert2
+      {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+              {% for category, message in messages %}
+                  Swal.fire({
+                      toast: true,
+                      position: 'top-end',
+                      icon: "{{ 'success' if category == 'success' else ('error' if category in ['danger', 'error'] else 'info') }}",
+                      title: "{{ message }}",
+                      showConfirmButton: false,
+                      timer: 3500,
+                      timerProgressBar: true
+                  });
+              {% endfor %}
+          {% endif %}
+      {% endwith %}
+    </script>
+    {% block extra_js %}{% endblock %}
+  </body>
+</html>

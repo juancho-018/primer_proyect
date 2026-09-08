@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block title %}Crear Producto - CLC Warm Pink MVC{% endblock %}
+
+{% block content %}
+<div style="max-width: 650px; margin: 2rem auto;">
+    <div class="card-pastel">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+            <h2><i class="fa-solid fa-box-open"></i> Agregar Producto</h2>
+            <a href="{{ url_for('producto.tproducto') }}" class="btn-pastel btn-pink btn-sm"><i class="fa-solid fa-arrow-left"></i> Volver</a>
+        </div>
+
+        <form action="{{ url_for('producto.add_producto') }}" method="POST" class="form-pastel">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem;">
+                <div class="form-group">
+                    <label for="cod_p"><i class="fa-solid fa-hashtag"></i> Código Producto</label>
+                    <input type="number" id="cod_p" name="cod_p" class="form-control-pastel" placeholder="Ej. 10" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="nom_p"><i class="fa-solid fa-tag"></i> Nombre Producto</label>
+                    <input type="text" id="nom_p" name="nom_p" class="form-control-pastel" placeholder="Ej. Top Rosas" required>
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem;">
+                <div class="form-group">
+                    <label for="col_p"><i class="fa-solid fa-palette"></i> Color</label>
+                    <input type="text" id="col_p" name="col_p" class="form-control-pastel" placeholder="Ej. Rosado Pastel" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="tam_p"><i class="fa-solid fa-ruler-vertical"></i> Tamaño / Talla</label>
+                    <input type="text" id="tam_p" name="tam_p" class="form-control-pastel" placeholder="Ej. S / M / L / 30cm" required>
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem;">
+                <div class="form-group">
+                    <label for="tipo_p"><i class="fa-solid fa-layer-group"></i> Tipo de Producto</label>
+                    <input type="text" id="tipo_p" name="tipo_p" class="form-control-pastel" placeholder="Ej. Trajes de baño" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="pre_p"><i class="fa-solid fa-money-bill-wave"></i> Precio</label>
+                    <input type="text" id="pre_p" name="pre_p" class="form-control-pastel" placeholder="Ej. $80.000" required>
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem;">
+                <div class="form-group">
+                    <label for="desc_p"><i class="fa-solid fa-percent"></i> Descuento</label>
+                    <input type="text" id="desc_p" name="desc_p" class="form-control-pastel" placeholder="Ej. 10%">
+                </div>
+
+                <div class="form-group">
+                    <label for="cod_c1"><i class="fa-solid fa-folder"></i> Código Categoría</label>
+                    <input type="number" id="cod_c1" name="cod_c1" class="form-control-pastel" placeholder="Ej. 2" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="cod_prov1"><i class="fa-solid fa-truck"></i> Código Proveedor</label>
+                <input type="number" id="cod_prov1" name="cod_prov1" class="form-control-pastel" placeholder="Ej. 1" required>
+            </div>
+
+            <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+                <button type="submit" class="btn-pastel btn-purple" style="flex: 1;"><i class="fa-solid fa-floppy-disk"></i> Guardar Producto</button>
+                <button type="reset" class="btn-pastel btn-pink" style="flex: 1;"><i class="fa-solid fa-rotate-left"></i> Limpiar</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

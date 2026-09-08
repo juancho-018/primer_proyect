@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block title %}CRUD Pedidos - CLC Pastel MVC{% endblock %}
+
+{% block content %}
+<div class="card-pastel">
+    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem;">
+        <div>
+            <h1><i class="fa-solid fa-cart-shopping"></i> Gestión de Pedidos</h1>
+            <p class="subtitle" style="margin-bottom: 0;">Administra los pedidos de los clientes</p>
+        </div>
+        <a href="{{ url_for('pedido.crearpedido') }}" class="btn-pastel btn-purple">
+            <i class="fa-solid fa-plus"></i> Agregar Pedido
+        </a>
+    </div>
+
+    <!-- Formulario de Búsqueda -->
+    <form action="{{ url_for('pedido.tpedido') }}" method="GET" style="display: flex; gap: 0.8rem; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap;">
+        <input type="number" name="cod_pe" class="form-control-pastel" style="max-width: 250px;" placeholder="Buscar por Código de Pedido..." value="{{ request.args.get('cod_pe', '') }}">
+        <button type="submit" class="btn-pastel btn-blue btn-sm"><i class="fa-solid fa-magnifying-glass"></i> Consultar</button>
+        <a href="{{ url_for('pedido.tpedido') }}" class="btn-pastel btn-pink btn-sm"><i class="fa-solid fa-rotate-left"></i> Limpiar</a>
+    </form>
+
+    <div class="table-responsive">
+        <table class="table-pastel">
+            <thead>
+                <tr>
+                    <th>Código Pedido</th>
+                    <th>Fecha Pedido</th>
+                    <th>Cantidad</th>
+                    <th>Valor Total</th>
+                    <th>Código Cliente</th>
+                    <th style="text-align: center;">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for p in pedidos %}
+                <tr>
+                    <td><strong>#{{ p.cod_pe if p.cod_pe is defined else p[0] }}</strong></td>
+                    <td>{{ p.f_pe if p.f_pe is defined else p[1] }}</td>
+                    <td>{{ p.cant_pe if p.cant_pe is defined else p[2] }}</td>
+                    <td><strong style="color: #276749;">{{ p.vt_pe if p.vt_pe is defined else p[3] }}</strong></td>
+                    <td>{{ p.cod_cli1 if p.cod_cli1 is defined else p[4] }}</td>
+                    <td style="text-align: center; white-space: nowrap;">
+                        <a href="{{ url_for('pedido.obtener_pedido', cod_pe=(p.cod_pe if p.cod_pe is defined else p[0])) }}" class="btn-pastel btn-blue btn-sm">
+                            <i class="fa-solid fa-pen-to-square"></i> Editar
+                        </a>
+                        <a href="{{ url_for('pedido.eliminar_pedido', cod_pe=(p.cod_pe if p.cod_pe is defined else p[0])) }}" class="btn-pastel btn-pink btn-sm" onclick="confirmarEliminacion(event, this.href, '¿Eliminar pedido?');">
+                            <i class="fa-solid fa-trash"></i> Eliminar
+                        </a>
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="6" style="text-align: center; padding: 2rem; color: var(--text-muted);">
+                        No hay pedidos registrados.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

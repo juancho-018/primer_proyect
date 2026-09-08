@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}Panel CRUD - CLC Pastel MVC{% endblock %}
+
+{% block content %}
+<div class="card-pastel" style="margin-bottom: 2rem;">
+    <h1><i class="fa-solid fa-database"></i> Panel de Administración CRUD</h1>
+    <p class="subtitle">Selecciona el módulo que deseas gestionar</p>
+
+    <div class="grid-cards">
+        <a href="{{ url_for('cliente.tcliente') }}" class="grid-card-item">
+            <div class="grid-card-icon" style="background: var(--pastel-blue); color: #2b6cb0;"><i class="fa-solid fa-address-book"></i></div>
+            <h3>Clientes</h3>
+        </a>
+        <a href="{{ url_for('usuario.tusuario') }}" class="grid-card-item">
+            <div class="grid-card-icon" style="background: var(--pastel-lavender); color: var(--accent-purple);"><i class="fa-solid fa-users"></i></div>
+            <h3>Usuarios</h3>
+        </a>
+        <a href="{{ url_for('producto.tproducto') }}" class="grid-card-item">
+            <div class="grid-card-icon" style="background: var(--pastel-pink); color: #9b2c2c;"><i class="fa-solid fa-box-open"></i></div>
+            <h3>Productos</h3>
+        </a>
+        <a href="{{ url_for('categoria.tcategoria') }}" class="grid-card-item">
+            <div class="grid-card-icon" style="background: var(--pastel-yellow); color: #975a16;"><i class="fa-solid fa-tags"></i></div>
+            <h3>Categorías</h3>
+        </a>
+        <a href="{{ url_for('proveedor.tproveedor') }}" class="grid-card-item">
+            <div class="grid-card-icon" style="background: var(--pastel-mint); color: #234e52;"><i class="fa-solid fa-truck-field"></i></div>
+            <h3>Proveedores</h3>
+        </a>
+        <a href="{{ url_for('pedido.tpedido') }}" class="grid-card-item">
+            <div class="grid-card-icon" style="background: var(--pastel-blue); color: #2b6cb0;"><i class="fa-solid fa-cart-shopping"></i></div>
+            <h3>Pedidos</h3>
+        </a>
+        <a href="{{ url_for('venta.tventa') }}" class="grid-card-item">
+            <div class="grid-card-icon" style="background: var(--pastel-lavender); color: var(--accent-purple);"><i class="fa-solid fa-cash-register"></i></div>
+            <h3>Ventas</h3>
+        </a>
+    </div>
+</div>
+{% endblock %}

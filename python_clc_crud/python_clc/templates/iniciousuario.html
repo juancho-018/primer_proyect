@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}Inicio Usuario - CLC Pastel MVC{% endblock %}
+
+{% block content %}
+<div class="card-pastel" style="margin-bottom: 2rem;">
+    <h1><i class="fa-solid fa-user-check"></i> Bienvenido a CLC</h1>
+    <p class="subtitle">¡Has iniciado sesión exitosamente!</p>
+
+    <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+        <a href="{{ url_for('main.products') }}" class="btn-pastel btn-purple"><i class="fa-solid fa-bag-shopping"></i> Explorar Productos</a>
+        <a href="{{ url_for('main.seccion') }}" class="btn-pastel btn-blue"><i class="fa-solid fa-layer-group"></i> Ver Catálogo</a>
+    </div>
+</div>
+{% endblock %}

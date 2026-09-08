@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}Perfil - CLC Pastel MVC{% endblock %}
+
+{% block content %}
+<div class="card-pastel" style="max-width: 600px; margin: 2rem auto; text-align: center;">
+    <div style="font-size: 3rem; color: var(--accent-purple); margin-bottom: 1rem;"><i class="fa-solid fa-user-circle"></i></div>
+    <h2>Información de Perfil</h2>
+    <p class="subtitle">Detalles de la cuenta de usuario</p>
+    <div style="text-align: left; background: #ffffff; padding: 1.5rem; border-radius: var(--radius-md); border: 1px solid var(--card-border);">
+        <p><strong>Usuario:</strong> {{ current_user.nom_us if current_user.is_authenticated else 'Invitado' }}</p>
+        <p style="margin-top: 0.5rem;"><strong>Correo:</strong> {{ current_user.correo_usu if current_user.is_authenticated else 'invitado@clc.com' }}</p>
+        <p style="margin-top: 0.5rem;"><strong>Rol:</strong> {{ current_user.rol if current_user.is_authenticated else 'usuario' }}</p>
+    </div>
+</div>
+{% endblock %}
