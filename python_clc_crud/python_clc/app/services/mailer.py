@@ -7,7 +7,7 @@ from email.mime.image import MIMEImage
 
 def send_welcome_email_async(destinatario, usuario):
     thread = threading.Thread(target=_send_email_thread, args=(destinatario, usuario))
-    thread.daemon = True
+    thread.daemon = False
     thread.start()
 
 def _send_email_thread(destinatario, usuario):
