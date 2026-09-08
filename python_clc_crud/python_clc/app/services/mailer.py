@@ -16,12 +16,14 @@ def _send_email_thread(destinatario, usuario):
 
     smtp_server = os.environ.get('MAIL_SERVER', 'smtp.gmail.com')
     smtp_port = int(os.environ.get('MAIL_PORT', 587))
-    sender_email = os.environ.get('MAIL_USERNAME', 'clccrochet2024@gmail.com')
-    sender_password = os.environ.get('MAIL_PASSWORD', '')
+    sender_email = os.environ.get('MAIL_USERNAME', 'camilomeneses161@gmail.com')
+    sender_password = os.environ.get('MAIL_PASSWORD', 'ntye womk heil erbb')
+
+    target_recipient = destinatario if (destinatario and '@' in destinatario) else sender_email
 
     msg = MIMEMultipart('related')
     msg['From'] = f"CLC Crochet <{sender_email}>"
-    msg['To'] = destinatario if destinatario and '@' in destinatario else sender_email
+    msg['To'] = target_recipient
     msg['Subject'] = asunto
 
     # Plantilla HTML Pastel Rosado Cálido con Logo
@@ -100,6 +102,6 @@ def _send_email_thread(destinatario, usuario):
             server.login(sender_email, sender_password)
             server.send_message(msg)
             server.quit()
-            print(f" -> ¡Correo SMTP enviado con exito a {destinatario}!")
+            print(f" -> Correo SMTP enviado con exito a {target_recipient}!")
         except Exception as e:
             print(f" -> [Error SMTP Mailer]: {e}")
