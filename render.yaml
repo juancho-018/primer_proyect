@@ -2,6 +2,7 @@ services:
   - type: web
     name: magia-del-crochet
     env: python
+    plan: free
     rootDir: python_clc_crud/python_clc
     buildCommand: pip install -r requirements.txt
     startCommand: gunicorn run:app
