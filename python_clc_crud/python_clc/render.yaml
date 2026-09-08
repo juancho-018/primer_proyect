@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: magia-del-crochet
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn run:app
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DATABASE_URL
+        sync: false
+      - key: MAIL_SERVER
+        value: smtp.gmail.com
+      - key: MAIL_PORT
+        value: "587"
+      - key: MAIL_USERNAME
+        value: camilomeneses161@gmail.com
+      - key: MAIL_PASSWORD
+        value: ntye womk heil erbb
