@@ -17,10 +17,20 @@ def create_app():
     
     app = Flask(__name__, template_folder=template_dir, static_folder=static_dir)
     
-    # Configuración de base de datos MySQL (Laragon / XAMPP)
-    app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'mysql://root:@localhost/bd_clc1')
+    # Configuración de base de datos MySQL / Cloud
+    db_url = os.environ.get('DATABASE_URL', 'mysql://root:@localhost/bd_clc1')
+    if db_url.startswith("postgres://"):
+        db_url = db_url.replace("postgres://", "postgresql://", 1)
+    elif db_url.startswith("mysql://"):
+        # Asegurar compatibilidad con pymysql en servidores cloud donde mysqlclient C lib no está instalada
+        try:
+            import MySQLdb
+        except ImportError:
+            db_url = db_url.replace("mysql://", "mysql+pymysql://", 1)
+
+    app.config['SQLALCHEMY_DATABASE_URI'] = db_url
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-    app.config['SECRET_KEY'] = 'clc_secret_key_pastel_mvc_2026_super_secure_key_32bytes'
+    app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'clc_secret_key_pastel_mvc_2026_super_secure_key_32bytes')
 
     # Inicializar extensiones
     db.init_app(app)

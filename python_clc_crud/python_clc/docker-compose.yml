@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  # Servidor MySQL 8.0
+  db:
+    image: mysql:8.0
+    container_name: clc_mysql_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: bd_clc1
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ../bd_clc1.sql:/docker-entrypoint-initdb.d/bd_clc1.sql
+
+  # Aplicación Web Flask
+  web:
+    build: .
+    container_name: clc_flask_web
+    restart: always
+    ports:
+      - "5000:5000"
+    environment:
+      - DATABASE_URL=mysql://root:rootpassword@db:3306/bd_clc1
+      - SECRET_KEY=clc_secret_key_pastel_mvc_2026_super_secure_key_32bytes
+      - MAIL_SERVER=smtp.gmail.com
+      - MAIL_PORT=587
+      - MAIL_USERNAME=camilomeneses161@gmail.com
+      - MAIL_PASSWORD=ntye womk heil erbb
+    depends_on:
+      - db
+    volumes:
+      - ./static:/app/static
+
+volumes:
+  mysql_data:
