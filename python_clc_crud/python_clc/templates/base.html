@@ -436,7 +436,7 @@
                       toast: true,
                       position: 'top-end',
                       icon: "{{ 'success' if category == 'success' else ('error' if category in ['danger', 'error'] else 'info') }}",
-                      title: "{{ message }}",
+                      title: {{ message|tojson }},
                       showConfirmButton: false,
                       timer: 3500,
                       timerProgressBar: true
