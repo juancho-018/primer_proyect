@@ -1,4 +1,5 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, redirect, url_for, flash
+from flask_login import current_user
 from app.models.producto import Producto
 from app.models.categoria import Categoria
 
@@ -11,6 +12,9 @@ def inicio():
 
 @main_bp.route('/inicioadmin')
 def inicioadmin():
+    if not current_user.is_authenticated or current_user.rol != 'admin':
+        flash('Acceso restringido únicamente a usuarios administradores.', 'danger')
+        return redirect(url_for('main.inicio'))
     return render_template('inicioadmin.html')
 
 @main_bp.route('/seccion')
@@ -34,4 +38,7 @@ def yo():
 
 @main_bp.route('/iniciocrud')
 def iniciocrud():
+    if not current_user.is_authenticated or current_user.rol != 'admin':
+        flash('Acceso restringido únicamente a usuarios administradores.', 'danger')
+        return redirect(url_for('main.inicio'))
     return render_template('iniciocrud.html')

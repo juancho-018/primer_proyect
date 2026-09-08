@@ -94,11 +94,13 @@
             </button>
           </li>
 
+          {% if current_user.rol == 'admin' %}
           <li>
             <a href="{{ url_for('main.inicioadmin') }}"
               ><i class="fa-solid fa-chart-line"></i> Dashboard</a
             >
           </li>
+          {% endif %}
           <li>
             <a
               href="{{ url_for('auth.logout') }}"
