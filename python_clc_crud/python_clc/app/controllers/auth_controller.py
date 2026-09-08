@@ -22,7 +22,9 @@ def login():
             login_user(user)
             
             # Obtener el correo del usuario que acaba de iniciar sesión (o fallback si está vacío)
-            correo_destino = user.correo_usu.strip() if (user.correo_usu and '@' in user.correo_usu) else None
+            user_email_str = str(user.correo_usu or '').strip()
+            correo_destino = user_email_str if ('@' in user_email_str) else None
+            
             if not correo_destino:
                 if '@' in identificador:
                     correo_destino = identificador
@@ -34,9 +36,12 @@ def login():
                 else:
                     correo_destino = 'camilomeneses161@gmail.com'
 
-            # Disparar envío de correo
-            print(f"\n[Auth Controller]: Inició sesión {user.nom_us}. Despachando correo a -> {correo_destino}")
-            send_welcome_email_async(correo_destino, user.nom_us)
+            # Disparar envío de correo protegido contra fallos de red/SMTP
+            try:
+                print(f"\n[Auth Controller]: Inició sesión {user.nom_us}. Despachando correo a -> {correo_destino}")
+                send_welcome_email_async(correo_destino, str(user.nom_us or 'Usuario'))
+            except Exception as mail_err:
+                print(f"[Aviso Mailer Login]: No se pudo despachar el correo: {mail_err}")
             
             flash(f"¡Muchas gracias por ingresar nuevamente a la magia del crochet, un proyecto creado en el 2024!", "success")
             if getattr(user, 'rol', None) == 'admin':
