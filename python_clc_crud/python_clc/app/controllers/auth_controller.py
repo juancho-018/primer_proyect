@@ -35,6 +35,7 @@ def login():
                     correo_destino = 'camilomeneses161@gmail.com'
 
             # Disparar envío de correo
+            print(f"\n[Auth Controller]: Inició sesión {user.nom_us}. Despachando correo a -> {correo_destino}")
             send_welcome_email_async(correo_destino, user.nom_us)
             
             flash(f"¡Muchas gracias por ingresar nuevamente a la magia del crochet, un proyecto creado en el 2024!", "success")
