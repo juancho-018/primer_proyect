@@ -38,7 +38,7 @@
                     <td><strong>#{{ u.cod_us if u.cod_us is defined else u[0] }}</strong></td>
                     <td>
                         {{ u.nom_us if u.nom_us is defined else u[1] }}
-                        {% if (u.nom_us if u.nom_us is defined else u[1]) == 'admin' or (u.correo_usu if u.correo_usu is defined else u[3]) == 'admin@gmail.com' %}
+                        {% if (u.rol if u.rol is defined else 'usuario') == 'admin' %}
                             <span style="background: var(--pastel-pink); color: #9b2c2c; padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.75rem; font-weight: bold; margin-left: 0.4rem;">ADMIN</span>
                         {% endif %}
                     </td>

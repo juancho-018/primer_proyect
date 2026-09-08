@@ -24,7 +24,7 @@ def login():
             send_welcome_email_async(user.correo_usu, user.nom_us)
             
             flash(f"¡Muchas gracias por ingresar nuevamente a la magia del crochet, un proyecto creado en el 2024!", "success")
-            if user.rol == 'admin' or user.nom_us == 'admin' or user.correo_usu == 'admin@gmail.com':
+            if getattr(user, 'rol', None) == 'admin':
                 return redirect(url_for('main.inicioadmin'))
             return redirect(url_for('main.inicio'))
         else:

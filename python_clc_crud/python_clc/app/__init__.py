@@ -83,64 +83,11 @@ def create_app():
     app.register_blueprint(api_bp)
     app.register_blueprint(compra_bp)
 
-    # Seeder para quemar el usuario admin (admin@gmail.com / admin123)
+    # Inicializar tablas de base de datos si no existen
     with app.app_context():
         try:
             db.create_all()
-            seed_admin_user()
         except Exception as e:
-            print(f"[Advertencia DB Seeder]: {e}")
+            print(f"[Advertencia DB]: {e}")
 
     return app
-
-def seed_admin_user():
-    from app.models.user import User
-    
-    # Ampliar longitud de la columna con_us a VARCHAR(255) en MySQL si es necesario
-    try:
-        db.session.execute(db.text("ALTER TABLE usuario MODIFY COLUMN con_us VARCHAR(255)"))
-        db.session.commit()
-    except Exception:
-        db.session.rollback()
-
-    admin = User.query.filter((User.correo_usu == 'admin@gmail.com') | (User.nom_us == 'admin')).first()
-    
-    password_to_store = generate_password_hash('admin123')
-    
-    if not admin:
-        admin = User(
-            cod_us=999,
-            nom_us='admin',
-            con_us=password_to_store,
-            correo_usu='admin@gmail.com',
-            rol='admin'
-        )
-        try:
-            db.session.add(admin)
-            db.session.commit()
-            print("-> Usuario Administrador (admin@gmail.com / admin123) creado exitosamente en la BD.")
-        except Exception as e:
-            db.session.rollback()
-            # Si la columna sigue siendo corta (VARCHAR 20), guardar clave plana como alternativa de respaldo
-            admin = User(
-                cod_us=999,
-                nom_us='admin',
-                con_us='admin123',
-                correo_usu='admin@gmail.com',
-                rol='admin'
-            )
-            db.session.add(admin)
-            db.session.commit()
-            print("-> Usuario Administrador (admin@gmail.com / admin123) creado como respaldo.")
-    else:
-        try:
-            admin.con_us = password_to_store
-            admin.correo_usu = 'admin@gmail.com'
-            admin.rol = 'admin'
-            db.session.commit()
-        except Exception:
-            db.session.rollback()
-            admin.con_us = 'admin123'
-            admin.correo_usu = 'admin@gmail.com'
-            admin.rol = 'admin'
-            db.session.commit()
