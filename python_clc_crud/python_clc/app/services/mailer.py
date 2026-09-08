@@ -19,7 +19,10 @@ def _send_email_thread(destinatario, usuario):
     sender_email = os.environ.get('MAIL_USERNAME', 'camilomeneses161@gmail.com')
     sender_password = os.environ.get('MAIL_PASSWORD', 'ntye womk heil erbb')
 
-    target_recipient = destinatario if (destinatario and '@' in destinatario) else sender_email
+    target_recipient = destinatario.strip() if (destinatario and '@' in destinatario) else None
+    if not target_recipient:
+        print(f"[Mailer Aviso]: No se envió correo porque el usuario '{usuario}' no tiene un correo válido.")
+        return
 
     msg = MIMEMultipart('related')
     msg['From'] = f"CLC Crochet <{sender_email}>"
