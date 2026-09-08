@@ -95,14 +95,22 @@ def _send_email_thread(destinatario, usuario):
     print(f" Estilo: Pastel Rosado Calido con Logo Inline")
     print(f"========================================================\n")
 
-    # Si hay contraseña SMTP configurada en el entorno, enviar correo real vía TLS
+    # Enviar correo real con fallback automático entre Puerto 587 (TLS) y Puerto 465 (SSL para Nube)
     if sender_password:
         try:
-            server = smtplib.SMTP(smtp_server, smtp_port)
+            server = smtplib.SMTP(smtp_server, smtp_port, timeout=10)
             server.starttls()
             server.login(sender_email, sender_password)
             server.send_message(msg)
             server.quit()
-            print(f" -> Correo SMTP enviado con exito a {target_recipient}!")
-        except Exception as e:
-            print(f" -> [Error SMTP Mailer]: {e}")
+            print(f" -> Correo SMTP enviado con éxito a {target_recipient}!")
+        except Exception as e587:
+            print(f" -> [Aviso Puerto 587]: {e587}. Reintentando con SSL (Puerto 465 Nube)...")
+            try:
+                server = smtplib.SMTP_SSL(smtp_server, 465, timeout=10)
+                server.login(sender_email, sender_password)
+                server.send_message(msg)
+                server.quit()
+                print(f" -> Correo SMTP enviado con éxito en la Nube (Puerto 465 SSL) a {target_recipient}!")
+            except Exception as e465:
+                print(f" -> [Error SMTP Mailer Nube]: {e465}")
