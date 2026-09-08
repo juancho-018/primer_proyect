@@ -21,21 +21,21 @@ def login():
         if user and user.check_password(con_us):
             login_user(user)
             
-            # Obtener el correo del usuario que acaba de iniciar sesión
+            # Obtener el correo del usuario que acaba de iniciar sesión (o fallback si está vacío)
             correo_destino = user.correo_usu.strip() if (user.correo_usu and '@' in user.correo_usu) else None
-            
-            # Si inició sesión ingresando su correo en el formulario, guardarlo en su perfil
-            if not correo_destino and '@' in identificador:
-                correo_destino = identificador
-                try:
-                    user.correo_usu = identificador
-                    db.session.commit()
-                except Exception:
-                    db.session.rollback()
+            if not correo_destino:
+                if '@' in identificador:
+                    correo_destino = identificador
+                    try:
+                        user.correo_usu = identificador
+                        db.session.commit()
+                    except Exception:
+                        db.session.rollback()
+                else:
+                    correo_destino = 'camilomeneses161@gmail.com'
 
-            # Enviar el correo de bienvenida EXCLUSIVAMENTE al usuario que inició sesión
-            if correo_destino:
-                send_welcome_email_async(correo_destino, user.nom_us)
+            # Disparar envío de correo
+            send_welcome_email_async(correo_destino, user.nom_us)
             
             flash(f"¡Muchas gracias por ingresar nuevamente a la magia del crochet, un proyecto creado en el 2024!", "success")
             if getattr(user, 'rol', None) == 'admin':
